@@ -51,8 +51,7 @@ def main():
         fp.close()
     else:
         pullLst = list(range(1, parsed.ballcount + 1))
-
-    random.shuffle(pullLst)
+        random.shuffle(pullLst)
 
     while len(pullLst) is not 0:
         vin = str(msvcrt.getch())  # type: str
