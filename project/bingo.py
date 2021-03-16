@@ -1,8 +1,8 @@
 import sys
 import argparse
 from argparse import ArgumentParser, Namespace
-from typing import List, Dict, Any, Callable, Tuple
-import msvcrt
+# from typing import List, Dict, Any, Callable, Tuple
+# import msvcrt
 import random
 import os
 
@@ -11,8 +11,10 @@ def showhelp():
     print('Help:\n'
           'h: Prints help\n'
           'q: Exit\n'
+          's: Show the remaining balls\n'
           'n: Next ball\n'
-          'r: Go back one ball step')
+          'r: Go back one ball step\n'
+          'c: Choose your own ball')
 
 
 def main():
@@ -50,14 +52,29 @@ def main():
 
         fp.close()
     else:
-        pullLst = list(range(1, parsed.ballcount + 1))
+        pullLst = list(range(0, parsed.ballcount))
         random.shuffle(pullLst)
 
+    showhelp()
     while len(pullLst) is not 0:
-        vin = str(msvcrt.getch())  # type: str
+        vin = str(input())  # type: str
 
         if 'h' in vin:
             showhelp()
+        if 's' in vin:
+            print(str(sorted(pullLst)))
+        if 'c' in vin:
+            try:
+                print('input a number from the list ' + str(sorted(pullLst)))
+                num = int(input())
+                if num in pullLst:
+                    pullLst = list(filter(lambda x: x != num, pullLst))
+                    removedLst.append(num)
+                    print('chosen element was ' + str(num))
+                else:
+                    print(str(num) + ' not in ' + str(sorted(pullLst)))
+            except Exception as e:
+                print('Failed with error ' + str(e))
         if 'q' in vin:
             exit()
         if 'n' in vin:
@@ -85,4 +102,5 @@ def main():
             fp.write('r'+str(e)+'\n')
 
         fp.close()
+    print('no more balls')
 main()
